@@ -11,7 +11,9 @@ func MigrationCreateStaff(db *gorm.DB) error {
 		return err
 	}
 
-	if !db.Migrator().HasIndex(&model.Staff{}, "idx_staff_hospital_id_username") {
+	indexName := "idx_staff_hospital_username"
+
+	if !db.Migrator().HasIndex(&model.Staff{}, indexName) {
 		if err := db.Migrator().CreateIndex(&model.Staff{}, "hospital_id_username"); err != nil {
 			return err
 		}

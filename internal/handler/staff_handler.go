@@ -1,0 +1,66 @@
+package handler
+
+import (
+	"hospital-api/internal/dto"
+	"hospital-api/internal/service"
+	"hospital-api/pkg/db"
+	"hospital-api/pkg/response"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+type StaffHandler struct {
+	srv    service.StaffService
+	hosSrv service.HospitalService
+}
+
+func NewStaffHandler(srv service.StaffService, hosSrv service.HospitalService) *StaffHandler {
+	return &StaffHandler{srv: srv, hosSrv: hosSrv}
+}
+
+func (h *StaffHandler) StaffCreate(c *gin.Context) {
+	var req dto.StaffRequestBaseFields
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.Error(c, http.StatusBadRequest, response.BodyInvalidMsg)
+		return
+	}
+
+	hospital, err := h.hosSrv.FindOne(req.Hospital)
+	if err != nil || hospital == nil {
+		response.Error(c, http.StatusBadRequest, response.DataNotFoundMsg)
+		return
+	}
+
+	staff, err := h.srv.Create(req)
+	if err != nil {
+		if db.IsUniqueConstraintError(err) {
+			response.Error(c, http.StatusConflict, "staff already exits in this hospital")
+			return
+		}
+		response.Error(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	response.Success(c, staff)
+}
+
+func (h *StaffHandler) StaffLogin(c *gin.Context) {
+	var req dto.StaffRequestBaseFields
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.Error(c, http.StatusBadRequest, response.BodyInvalidMsg)
+		return
+	}
+
+	result, err := h.srv.Login(req)
+	if err != nil {
+		response.Error(c, http.StatusUnauthorized, response.UnAuthorized)
+		return
+	}
+
+	data := dto.StaffLoginResult{AccessToken: result.AccessToken}
+
+	response.Success(c, data)
+}

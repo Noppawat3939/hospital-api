@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"hospital-api/pkg/response"
 	"net/http"
 
@@ -9,11 +10,11 @@ import (
 
 func (s *Server) registerRoutes() {
 	r := s.router
-	// db := s.db
 
 	r.NoRoute(func(c *gin.Context) {
-		response.Error(c, http.StatusNotFound, nil)
-		c.Abort()
+		msg := fmt.Sprintf("path %s not found", c.Request.URL)
+		response.Error(c, http.StatusNotFound, msg)
 	})
 
+	RegisterStaffRoutes(s.router, s.db)
 }

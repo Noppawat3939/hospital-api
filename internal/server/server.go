@@ -16,13 +16,18 @@ type Server struct {
 func New(db *gorm.DB) *Server {
 	r := gin.New()
 
-	r.Use(CORS())
+	r.RedirectTrailingSlash = true
+	r.Use(gin.Logger(), gin.Recovery(), CORS())
 
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "ok"})
 	})
 
-	return &Server{db: db, router: r}
+	s := &Server{db: db, router: r}
+
+	s.registerRoutes()
+
+	return s
 }
 
 func (s *Server) Start(port string) error {
