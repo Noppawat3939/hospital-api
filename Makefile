@@ -1,3 +1,6 @@
+run:
+	go run cmd/api/main.go
+
 compose-up:
 	cp .env.dev .env
 	docker compose up -d
