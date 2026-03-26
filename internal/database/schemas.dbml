@@ -1,0 +1,46 @@
+Table hospital {
+  id text [pk, note:"uuid"]
+  name text [unique,not null]
+  created_at timestamp [increment]
+}
+
+Table patient {
+  id int [pk]
+  hospital_id text [not null, note: "uuid", ref: > hospital.id]
+  first_name_th text [not null]
+  middle_name_th text [null]
+  last_name_th text [not null]
+  first_name_en text [not null]
+  middle_name_en text [null]
+  last_name_en text [not null]
+  date_of_birth date [note: "YYYY-MM-DD format"]
+  patient_hn text [unique, not null]
+  national_id text [unique, not null]
+  passport_id text [unique, null]
+  phone_number text [null]
+  email text [unique, null]
+  gender patient_gender
+
+  indexes {
+    (hospital_id,first_name_th, middle_name_th, last_name_th)
+    (hospital_id,first_name_en, middle_name_en, last_name_en)
+  }
+}
+
+Enum patient_gender {
+  M
+  F
+}
+
+Table staff {
+  id int [pk]
+  hospital_id text [not null, note: "uuid", ref: > hospital.id]
+  username text [unique ,not null]
+  password text [not null]
+  created_at timestamp [increment]
+  updated_at timestamp [increment]
+
+  indexes {
+    (hospital_id, username)
+  }
+}
