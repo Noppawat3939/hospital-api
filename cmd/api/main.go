@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"hospital-api/config"
 	"hospital-api/internal/database"
 	"hospital-api/internal/server"
@@ -16,8 +15,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	r := server.New(db)
+	srv := server.New(db)
 
-	fmt.Println("Server started")
-	r.Run(":" + cfg.Port)
+	if err := srv.Start(cfg.Port); err != nil {
+		log.Fatal(err)
+	}
 }
