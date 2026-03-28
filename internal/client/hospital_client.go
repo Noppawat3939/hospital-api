@@ -18,7 +18,10 @@ type HospitalClient interface {
 }
 
 func NewHospitalClient(baseURL string) *hospitalClient {
-	return &hospitalClient{baseURL: baseURL, client: &http.Client{Timeout: 5 * time.Second}}
+	return &hospitalClient{
+		baseURL: baseURL,
+		client:  &http.Client{Timeout: 5 * time.Second},
+	}
 }
 
 func (c *hospitalClient) GetPatientByID(id string) (*dto.HospitalClientPatientResponse, error) {
@@ -29,7 +32,7 @@ func (c *hospitalClient) GetPatientByID(id string) (*dto.HospitalClientPatientRe
 		return nil, err
 	}
 
-	defer res.Body.Close()
+	defer res.Body.Close() // prevent resources leak
 
 	if res.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("HIS api error %d", res.StatusCode)
