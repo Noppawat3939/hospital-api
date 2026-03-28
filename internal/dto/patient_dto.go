@@ -12,6 +12,7 @@ type SearchPatientRequest struct {
 	PhoneNumber *string    `json:"phone_number"`
 	Email       *string    `json:"email"`
 	Limit       *int       `json:"limit"`
+	Page        *int       `json:"page"`
 }
 
 type SearchPatientResponse struct {

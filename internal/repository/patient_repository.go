@@ -3,6 +3,7 @@ package repository
 import (
 	"hospital-api/internal/dto"
 	"hospital-api/internal/model"
+	"hospital-api/pkg/pagination"
 
 	"gorm.io/gorm"
 )
@@ -28,15 +29,8 @@ func NewPatientRepositroy(db *gorm.DB) PatientRepository {
 func (r *patientRepository) FindAll(hospitalID string, req dto.SearchPatientRequest) ([]model.Patient, error) {
 	var data []model.Patient
 
-	// safe limit: ถ้า req.Limit เป็น nil ใช้ default 100
-	limit := 100
-	// if req.Limit != nil && *req.Limit > 0 {
-	// 	limit = *req.Limit
-	// }
-
 	query := r.db.Where("hospital_id = ?", hospitalID)
 
-	// Search by national_id OR passport_id
 	nationalID := ""
 	passportID := ""
 	if req.NationalID != nil {
@@ -54,7 +48,6 @@ func (r *patientRepository) FindAll(hospitalID string, req dto.SearchPatientRequ
 		query = query.Where("passport_id = ?", passportID)
 	}
 
-	// Additional filters (AND)
 	if req.FirstName != nil && *req.FirstName != "" {
 		keyword := "%" + *req.FirstName + "%"
 		query = query.Where("(first_name_th ILIKE ? OR first_name_en ILIKE ?)", keyword, keyword)
@@ -82,8 +75,10 @@ func (r *patientRepository) FindAll(hospitalID string, req dto.SearchPatientRequ
 		query = query.Where("email = ?", *req.Email)
 	}
 
-	// Limit
-	err := query.Limit(limit).Find(&data).Error
+	p := pagination.Pagination{Limit: req.Limit, Offset: req.Page}
+	query = pagination.Apply(query, p)
+
+	err := query.Find(&data).Error
 	return data, err
 }
 
