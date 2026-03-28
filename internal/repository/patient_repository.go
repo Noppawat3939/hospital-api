@@ -8,10 +8,6 @@ import (
 	"gorm.io/gorm"
 )
 
-const (
-	defaultLimit = 20
-)
-
 type PatientRepository interface {
 	FindAll(hospitalID string, req dto.SearchPatientRequest) ([]model.Patient, error)
 	FindOneByIdentity(req dto.SearchPatientRequest) (*model.Patient, error)
@@ -31,21 +27,12 @@ func (r *patientRepository) FindAll(hospitalID string, req dto.SearchPatientRequ
 
 	query := r.db.Where("hospital_id = ?", hospitalID)
 
-	nationalID := ""
-	passportID := ""
-	if req.NationalID != nil {
-		nationalID = *req.NationalID
-	}
-	if req.PassportID != nil {
-		passportID = *req.PassportID
+	if req.NationalID != nil && *req.NationalID != "" {
+		query = query.Where("national_id = ?", *req.NationalID)
 	}
 
-	if nationalID != "" && passportID != "" {
-		query = query.Where("national_id = ? OR passport_id = ?", nationalID, passportID)
-	} else if nationalID != "" {
-		query = query.Where("national_id = ?", nationalID)
-	} else if passportID != "" {
-		query = query.Where("passport_id = ?", passportID)
+	if req.PassportID != nil && *req.PassportID != "" {
+		query = query.Where("passport_id = ?", *req.PassportID)
 	}
 
 	if req.FirstName != nil && *req.FirstName != "" {

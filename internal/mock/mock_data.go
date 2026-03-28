@@ -1,19 +1,19 @@
 package mock
 
 type MockPatient struct {
-	FirstNameTH  string  `json:"first_name_th"`
-	MiddleNameTH *string `json:"middle_name_th"`
-	LastNameTH   string  `json:"last_name_th"`
-	FirstNameEN  string  `json:"first_name_en"`
-	MiddleNameEN *string `json:"middle_name_en"`
-	LastNameEN   string  `json:"last_name_en"`
-	DateOfBirth  string  `json:"date_of_birth"`
-	PatientHN    string  `json:"patient_hn"`
-	NationalID   string  `json:"national_id"`
-	PassportID   string  `json:"passport_id"`
-	PhoneNumber  *string `json:"phone_number"`
-	Email        *string `json:"email"`
-	Gender       string  `json:"gender"`
+	FirstNameTH  string `json:"first_name_th"`
+	MiddleNameTH string `json:"middle_name_th"`
+	LastNameTH   string `json:"last_name_th"`
+	FirstNameEN  string `json:"first_name_en"`
+	MiddleNameEN string `json:"middle_name_en"`
+	LastNameEN   string `json:"last_name_en"`
+	DateOfBirth  string `json:"date_of_birth"`
+	PatientHN    string `json:"patient_hn"`
+	NationalID   string `json:"national_id"`
+	PassportID   string `json:"passport_id"`
+	PhoneNumber  string `json:"phone_number"`
+	Email        string `json:"email"`
+	Gender       string `json:"gender"`
 }
 
 var MockPatients = []MockPatient{
@@ -37,6 +37,7 @@ var MockPatients = []MockPatient{
 		PatientHN:   "HN100002",
 		NationalID:  "2222222222222",
 		PassportID:  "2222222222222",
+		Email:       "Somchai22@gmail.com",
 		Gender:      "M",
 	},
 	{
@@ -57,6 +58,7 @@ var MockPatients = []MockPatient{
 		LastNameEN:  "Sodsai",
 		DateOfBirth: "1992-07-20",
 		PatientHN:   "HN100004",
+		PhoneNumber: "0944448900",
 		NationalID:  "4444444444444",
 		PassportID:  "4444444444444",
 		Gender:      "F",
@@ -68,6 +70,7 @@ var MockPatients = []MockPatient{
 		LastNameEN:  "Meesuk",
 		DateOfBirth: "1980-12-05",
 		PatientHN:   "HN100005",
+		PhoneNumber: "0955558900",
 		NationalID:  "5555555555555",
 		PassportID:  "5555555555555",
 		Gender:      "M",
@@ -95,15 +98,19 @@ var MockPatients = []MockPatient{
 		Gender:      "M",
 	},
 	{
-		FirstNameTH: "กมล",
-		LastNameTH:  "ดีมาก",
-		FirstNameEN: "Kamon",
-		LastNameEN:  "Deemark",
-		DateOfBirth: "1998-02-14",
-		PatientHN:   "HN100008",
-		NationalID:  "8888888888888",
-		PassportID:  "8888888888888",
-		Gender:      "F",
+		FirstNameTH:  "John",
+		MiddleNameTH: "",
+		LastNameTH:   "Doe",
+		FirstNameEN:  "John",
+		MiddleNameEN: "Michael",
+		LastNameEN:   "Doe",
+		DateOfBirth:  "1990-07-15",
+		PatientHN:    "HN100011",
+		NationalID:   "",
+		PassportID:   "P123456789",
+		PhoneNumber:  "+66812345678",
+		Email:        "john.doe@example.com",
+		Gender:       "M",
 	},
 	{
 		FirstNameTH: "ธนา",
