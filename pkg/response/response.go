@@ -12,7 +12,7 @@ const (
 	ErrUnAuthorized      = "unauthorized"
 	ErrMissingAuthHeader = "missing authorization header"
 	ErrInvalidAuthFormat = "invalid authorization header format"
-	ErrInvalidCrediental = "invalid creadiental"
+	ErrInvalidCredential = "invalid credential"
 	ErrHospitalInvalid   = "hospital invalid"
 	ErrDupCreateStaff    = "staff already exits in this hospital"
 )

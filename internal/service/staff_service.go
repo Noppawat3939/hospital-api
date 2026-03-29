@@ -39,13 +39,13 @@ func (s *staffService) Login(req dto.StaffRequestBaseFields) (*dto.StaffLoginRes
 	// check not found
 	staff, err := s.repo.FindOneByUsernameAndHospitalID(req.Username, req.Hospital)
 	if err != nil {
-		return nil, errors.New(response.ErrInvalidCrediental)
+		return nil, errors.New(response.ErrInvalidCredential)
 	}
 
 	// check password
 	matched := password.Compare(req.Password, staff.Password)
 	if !matched {
-		return nil, errors.New(response.ErrInvalidCrediental)
+		return nil, errors.New(response.ErrInvalidCredential)
 	}
 
 	// gen jwt
