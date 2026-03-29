@@ -17,4 +17,5 @@ compose-down:
 compose-build:
 	docker compose build --no-cache
 
-docker-run: compose-down compose-build compose-up
+docker-run:
+	docker compose up
